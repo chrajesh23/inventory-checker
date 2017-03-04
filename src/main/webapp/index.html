@@ -1,0 +1,55 @@
+<!doctype html>
+<html ng-app="InvSearch">
+<head>
+<title>Inventory Checker</title>
+<script src="/inventory-checker/resources/script/angular.min.js"></script>
+<script src="/inventory-checker/resources/script/FileSaver.js"></script>
+<script src="/inventory-checker/resources/script/inventory.js"></script>
+</head>
+
+<body>
+	<div ng-controller="MainCtrl">
+		<p>
+			<input type="text" name="host" ng-model="hostName"
+				ng-init="hostName='localhost'"> <input type="text"
+				name="port" ng-model="portNumber" ng-init="portNumber='8080'">
+		</p>
+		<P>
+			<input type="text" name="sku" ng-model="skuValue"
+				ng-init="skuValue='46270960'">&nbsp; <a ng-href='#here'
+				ng-click='loadData()'>Search Inventory</a> 
+				<img ng-show="loadStatus"
+				src="/inventory-checker/resources/images/img.gif" width="60px"
+				height="30px" />
+		</p>
+		<div>
+			<p>Inventory Results for SKU:{{inputSKU}}</p>
+			<p>
+				<button ng-click="exportData()" ng-disabled="disableExport">Export</button>
+			</p>
+			<div id="exportable">
+				<table border=1 width="100%">
+					<thead>
+						<tr>
+							<th>Name</th>
+							<th>Price</th>
+							<th>Quantity</th>
+							<th>Status</th>
+							<th>Store Id</th>
+						</tr>
+					</thead>
+					<tbody>
+						<tr ng-repeat="result in results">
+							<td>{{result.results[0].name}}</td>
+							<td>{{result.results[0].price.priceInCents}}</td>
+							<td>{{result.results[0].inventory.quantity}}</td>
+							<td>{{result.results[0].inventory.status}}</td>
+							<td><a ng-href="{{result.storeLink}}" target="_blank">{{result.storeId}}</a></td>
+						</tr>
+					</tbody>
+				</table>
+			</div>
+		</div>
+	</div>
+</body>
+</html>
