@@ -3,8 +3,6 @@ package com.rest.to;
 import java.io.Serializable;
 import java.util.List;
 
-import com.fasterxml.jackson.annotation.JsonIgnore;
-
 /**
  * The Class SearchResult.
  */
@@ -23,15 +21,16 @@ public class SearchResult implements Serializable {
 	private List<InventoryResult> results;
 
 	/** The store id. */
-	private String storeId;
+	private int storeId;
 
 	/** The price. */
-	@JsonIgnore
 	private Integer price;
 	
-	private String totalPrice;
-	
+	/** The store link. */
 	private String storeLink;
+	
+	/** The sku. */
+	private String sku;
 
 	/**
 	 * Gets the count.
@@ -95,7 +94,7 @@ public class SearchResult implements Serializable {
 	 *
 	 * @return the store id
 	 */
-	public String getStoreId() {
+	public int getStoreId() {
 		return storeId;
 	}
 
@@ -105,7 +104,7 @@ public class SearchResult implements Serializable {
 	 * @param storeId
 	 *            the new store id
 	 */
-	public void setStoreId(String storeId) {
+	public void setStoreId(int storeId) {
 		this.storeId = storeId;
 	}
 
@@ -128,19 +127,39 @@ public class SearchResult implements Serializable {
 		this.price = price;
 	}
 
-	public String getTotalPrice() {
-		return totalPrice;
-	}
-
-	public void setTotalPrice(String totalPrice) {
-		this.totalPrice = totalPrice;
-	}
-
+	/**
+	 * Gets the store link.
+	 *
+	 * @return the store link
+	 */
 	public String getStoreLink() {
 		return storeLink;
 	}
 
+	/**
+	 * Sets the store link.
+	 *
+	 * @param storeLink the new store link
+	 */
 	public void setStoreLink(String storeLink) {
 		this.storeLink = storeLink;
+	}
+
+	/**
+	 * Gets the sku.
+	 *
+	 * @return the sku
+	 */
+	public String getSku() {
+		return sku;
+	}
+
+	/**
+	 * Sets the sku.
+	 *
+	 * @param sku the new sku
+	 */
+	public void setSku(String sku) {
+		this.sku = sku;
 	}
 }

@@ -2,30 +2,53 @@
 <html ng-app="InvSearch">
 <head>
 <title>Inventory Checker</title>
-<script src="/inventory-checker/resources/script/angular.min.js"></script>
+<link rel="stylesheet" type="text/css" href="/inventory-checker/resources/css/mystyle.css">
+<link rel="stylesheet" type="text/css" href="/inventory-checker/resources/css/ng-table.min.css">
+
+<script src="/inventory-checker/resources/script/angular.js"></script>
 <script src="/inventory-checker/resources/script/FileSaver.js"></script>
+<script src="/inventory-checker/resources/script/jquery-1.12.4.js"></script>
 <script src="/inventory-checker/resources/script/inventory.js"></script>
+
 </head>
 
 <body>
 	<div ng-controller="MainCtrl">
-		<p>
-			<input type="text" name="host" ng-model="hostName"
-				ng-init="hostName='localhost'"> <input type="text"
-				name="port" ng-model="portNumber" ng-init="portNumber='8080'">
-		</p>
-		<P>
-			<input type="text" name="sku" ng-model="skuValue"
-				ng-init="skuValue='46270960'">&nbsp; <a ng-href='#here'
-				ng-click='loadData()'>Search Inventory</a> 
-				<img ng-show="loadStatus"
-				src="/inventory-checker/resources/images/img.gif" width="60px"
-				height="30px" />
-		</p>
+		<table>
+			<tr>
+				<td class="input" align="right">Host Name</td>
+				<td><input type="text" name="host" ng-model="hostName"
+					ng-init="hostName='localhost'"></td>
+				<td class="input" align="right">Port</td>
+				<td><input type="text" name="port" ng-model="portNumber"
+					ng-init="portNumber='8080'"></td>
+			</tr>
+			<tr>
+				<td class="input" align="right">Product SKU</td>
+				<td><input type="text" name="sku" ng-model="skuValue"
+					ng-init="skuValue='46270960'"></td>
+				<td class="input" align="right">Product Description</td>
+				<td><input type="text" name="prodDesc" ng-model="prodDesc"
+					ng-init="prodDesc=''"></td>
+				<td class="input" align="right">Zip Code</td>
+				<td><input type="text" name="zipCode" ng-model="zipCode"
+					ng-init="zipCode=''"></td>
+				<td><input type="submit" value="Search Inventory"
+					ng-click='loadData()' ng-disabled="disableSubmit"></td>
+				<td><img ng-show="loadStatus"
+					src="/inventory-checker/resources/images/img.gif" width="40px"
+					height="15px" /></td>
+			</tr>
+		</table>
+
+		<br>
+
 		<div>
-			<p>Inventory Results for SKU:{{inputSKU}}</p>
+			<strong style="color: blue; text-decoration: underline;"
+				ng-show="disableResultMessage">Inventory Results for:{{inputSearch}}</strong>
 			<p>
-				<button ng-click="exportData()" ng-disabled="disableExport">Export</button>
+				<button ng-click="exportData()" ng-disabled="disableExport"
+					ng-show="disableResultMessage">Export</button>
 			</p>
 			<div id="exportable">
 				<table border=1 width="100%">
@@ -40,10 +63,10 @@
 					</thead>
 					<tbody>
 						<tr ng-repeat="result in results">
-							<td>{{result.results[0].name}}</td>
-							<td>{{result.results[0].price.priceInCents}}</td>
-							<td>{{result.results[0].inventory.quantity}}</td>
-							<td>{{result.results[0].inventory.status}}</td>
+							<td>{{result.name}}</td>
+							<td>{{result.price}}</td>
+							<td>{{result.quantity}}</td>
+							<td>{{result.status}}</td>
 							<td><a ng-href="{{result.storeLink}}" target="_blank">{{result.storeId}}</a></td>
 						</tr>
 					</tbody>

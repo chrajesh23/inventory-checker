@@ -11,7 +11,7 @@ public class Price implements Serializable {
 	private static final long serialVersionUID = -7466103649608512409L;
 
 	/** The price in cents. */
-	private String priceInCents;
+	private Integer priceInCents;
 	
 	/** The currency unit. */
 	private String currencyUnit;
@@ -24,7 +24,7 @@ public class Price implements Serializable {
 	 *
 	 * @return the price in cents
 	 */
-	public String getPriceInCents() {
+	public Integer getPriceInCents() {
 		return priceInCents;
 	}
 	
@@ -33,7 +33,7 @@ public class Price implements Serializable {
 	 *
 	 * @param priceInCents the new price in cents
 	 */
-	public void setPriceInCents(String priceInCents) {
+	public void setPriceInCents(Integer priceInCents) {
 		this.priceInCents = priceInCents;
 	}
 	

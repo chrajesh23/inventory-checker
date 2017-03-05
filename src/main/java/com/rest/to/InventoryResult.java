@@ -18,14 +18,14 @@ public class InventoryResult implements Serializable {
 	/** The price. */
 	private Price price;
 	
-	/** The location. *//*
-	private Location location;*/
-	
 	/** The inventory. */
 	private Inventory inventory;
 	
 	/** The name. */
 	private String name;
+	
+	/** The product id. */
+	private ProductId productId;
 
 	/**
 	 * Gets the price.
@@ -97,5 +97,23 @@ public class InventoryResult implements Serializable {
 	 */
 	public void setName(String name) {
 		this.name = name;
+	}
+
+	/**
+	 * Gets the product id.
+	 *
+	 * @return the product id
+	 */
+	public ProductId getProductId() {
+		return productId;
+	}
+
+	/**
+	 * Sets the product id.
+	 *
+	 * @param productId the new product id
+	 */
+	public void setProductId(ProductId productId) {
+		this.productId = productId;
 	}
 }

@@ -1,0 +1,28 @@
+body {
+	background-color: white;
+	/*background-image: url("/inventory-checker/resources/images/img.gif");
+    background-repeat: no-repeat;
+    background-position: center center;*/
+}
+
+h1 {
+	color: navy;
+	margin-left: 20px;
+	font-family: helvetica;
+}
+
+td.input {
+	color: #5e9ca0;
+	font-family:helvetica
+}
+
+table.result {
+	border-collapse: collapse;
+    border: 1px solid black;
+}
+th.result {
+	border: 1px solid black;
+}
+td.result {
+	border: 1px solid black;
+}
