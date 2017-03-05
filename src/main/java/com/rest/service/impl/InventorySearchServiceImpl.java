@@ -60,19 +60,7 @@ public class InventorySearchServiceImpl implements InventorySearchServiceIF {
 
 		for (Future<SearchResult> future : futures) {
 			try {
-				SearchResult searchResult = future.get();
-				if (Objects.nonNull(searchResult) && Objects.nonNull(searchResult.getResults())) {
-					for (InventoryResult invResult : searchResult.getResults()) {
-						if (Objects.nonNull(invResult.getPrice())
-								&& Objects.nonNull(invResult.getProductId().getItemId())) {
-							if (Objects.nonNull(invResult.getPrice())
-									&& Objects.nonNull(invResult.getPrice().getPriceInCents())) {
-								searchResult.setPrice(invResult.getPrice().getPriceInCents() / 100);
-							}
-						}
-					}
-				}
-				results.add(searchResult);
+				results.add(future.get());
 			} catch (InterruptedException e) {
 				e.printStackTrace();
 			} catch (ExecutionException e) {
@@ -81,9 +69,9 @@ public class InventorySearchServiceImpl implements InventorySearchServiceIF {
 		}
 		long endTime = System.currentTimeMillis();
 		logger.debug("Total Time Taken (secs):" + (endTime - startTime) / 1000);
-		results = sort(results);
+		List<InventoryResult> sortedResults = sort(results);
 
-		return mapResponse(results);
+		return mapResponse(sortedResults);
 	}
 
 	/**
@@ -121,27 +109,26 @@ public class InventorySearchServiceImpl implements InventorySearchServiceIF {
 	 *            the results
 	 * @return the list
 	 */
-	private List<InventorySearchResponse> mapResponse(final List<SearchResult> results) {
+	private List<InventorySearchResponse> mapResponse(final List<InventoryResult> results) {
 		List<InventorySearchResponse> respLst = new ArrayList<>();
-		for (SearchResult searchResult : results) {
-			for (InventoryResult inventoryResult : searchResult.getResults()) {
-				InventorySearchResponse response = new InventorySearchResponse();
-				response.setName(inventoryResult.getName());
-				if (Objects.nonNull(inventoryResult.getPrice())
-						&& Objects.nonNull(inventoryResult.getPrice().getPriceInCents())) {
-					response.setPrice(String.valueOf(inventoryResult.getPrice().getPriceInCents()/100));
-				}
-
-				if (Objects.nonNull(inventoryResult.getInventory())) {
-					response.setQuantity(inventoryResult.getInventory().getQuantity());
-					response.setStatus(inventoryResult.getInventory().getStatus());
-				}
-				response.setStoreId(String.valueOf((searchResult.getStoreId())));
-				response.setStoreLink(STORE_LINK + searchResult.getStoreId() + "/search?query="
-						+ inventoryResult.getProductId().getItemId());
-
-				respLst.add(response);
+		for (InventoryResult inventoryResult : results) {
+			InventorySearchResponse response = new InventorySearchResponse();
+			response.setName(inventoryResult.getName());
+			if (Objects.nonNull(inventoryResult.getPrice())
+					&& Objects.nonNull(inventoryResult.getPrice().getPriceInCents())) {
+				response.setPrice(String.valueOf(inventoryResult.getPrice().getPriceInCents()));
 			}
+
+			if (Objects.nonNull(inventoryResult.getInventory())) {
+				response.setQuantity(inventoryResult.getInventory().getQuantity());
+				response.setStatus(inventoryResult.getInventory().getStatus());
+			}
+
+			response.setStoreId(String.valueOf((inventoryResult.getStoreId())));
+			response.setStoreLink(STORE_LINK + inventoryResult.getStoreId() + "/search?query="
+					+ inventoryResult.getProductId().getItemId());
+
+			respLst.add(response);
 		}
 
 		return respLst;
@@ -154,21 +141,28 @@ public class InventorySearchServiceImpl implements InventorySearchServiceIF {
 	 *            the results
 	 * @return the list
 	 */
-	private List<SearchResult> sort(final List<SearchResult> results) {
-		List<SearchResult> sortedList = new ArrayList<>();
-		Map<Integer, List<SearchResult>> map = new TreeMap<Integer, List<SearchResult>>();
+	private List<InventoryResult> sort(final List<SearchResult> results) {
+		List<InventoryResult> sortedList = new ArrayList<>();
+		Map<Integer, List<InventoryResult>> map = new TreeMap<Integer, List<InventoryResult>>();
 		for (SearchResult searchResult : results) {
-			if (Objects.nonNull(searchResult) && Objects.nonNull(searchResult.getPrice())) {
-				if (Objects.nonNull(map.get(searchResult.getPrice()))) {
-					map.get(searchResult.getPrice()).add(searchResult);
-				} else {
-					List<SearchResult> temp = new ArrayList<>();
-					temp.add(searchResult);
-					map.put(searchResult.getPrice(), temp);
+			if (Objects.nonNull(searchResult) && Objects.nonNull(searchResult.getResults())) {
+				for (InventoryResult inventoryResult : searchResult.getResults()) {
+					inventoryResult.setStoreId(searchResult.getStoreId());
+					if (Objects.nonNull(inventoryResult.getPrice())
+							&& Objects.nonNull(inventoryResult.getPrice().getPriceInCents())) {
+
+						if (Objects.nonNull(map.get(inventoryResult.getPrice().getPriceInCents()))) {
+							map.get(inventoryResult.getPrice().getPriceInCents()).add(inventoryResult);
+						} else {
+							List<InventoryResult> temp = new ArrayList<>();
+							temp.add(inventoryResult);
+							map.put(inventoryResult.getPrice().getPriceInCents(), temp);
+						}
+					}
 				}
 			}
 		}
-		for (Map.Entry<Integer, List<SearchResult>> entry : map.entrySet()) {
+		for (Map.Entry<Integer, List<InventoryResult>> entry : map.entrySet()) {
 			sortedList.addAll(entry.getValue());
 		}
 		return sortedList;

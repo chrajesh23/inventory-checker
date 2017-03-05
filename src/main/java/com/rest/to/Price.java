@@ -1,6 +1,7 @@
 package com.rest.to;
 
 import java.io.Serializable;
+import java.util.Objects;
 
 /**
  * The Class Price.
@@ -25,6 +26,9 @@ public class Price implements Serializable {
 	 * @return the price in cents
 	 */
 	public Integer getPriceInCents() {
+		if (Objects.nonNull(priceInCents)) {
+			return priceInCents/100;
+		}
 		return priceInCents;
 	}
 	

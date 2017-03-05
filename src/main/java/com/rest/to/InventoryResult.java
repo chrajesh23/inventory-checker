@@ -26,6 +26,9 @@ public class InventoryResult implements Serializable {
 	
 	/** The product id. */
 	private ProductId productId;
+	
+	/** The store id. */
+	private int storeId;
 
 	/**
 	 * Gets the price.
@@ -115,5 +118,13 @@ public class InventoryResult implements Serializable {
 	 */
 	public void setProductId(ProductId productId) {
 		this.productId = productId;
+	}
+
+	public int getStoreId() {
+		return storeId;
+	}
+
+	public void setStoreId(int storeId) {
+		this.storeId = storeId;
 	}
 }
