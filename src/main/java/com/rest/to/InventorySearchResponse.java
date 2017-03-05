@@ -31,6 +31,9 @@ public class InventorySearchResponse implements Serializable {
 	/** The store id. */
 	private String storeId;
 	
+	/** The store name. */
+	private String storeName;
+	
 	/** The store link. */
 	private String storeLink;
 	/**
@@ -123,11 +126,29 @@ public class InventorySearchResponse implements Serializable {
 		this.storeId = storeId;
 	}
 
+	/**
+	 * Gets the store link.
+	 *
+	 * @return the store link
+	 */
 	public String getStoreLink() {
 		return storeLink;
 	}
 
+	/**
+	 * Sets the store link.
+	 *
+	 * @param storeLink the new store link
+	 */
 	public void setStoreLink(String storeLink) {
 		this.storeLink = storeLink;
+	}
+
+	public String getStoreName() {
+		return storeName;
+	}
+
+	public void setStoreName(String storeName) {
+		this.storeName = storeName;
 	}
 }

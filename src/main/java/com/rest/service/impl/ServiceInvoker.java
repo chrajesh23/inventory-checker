@@ -47,7 +47,7 @@ public class ServiceInvoker {
 	 * @return the future
 	 */
 	@Async
-	public Future<SearchResult> invokeService(final int storeId, final String searchString) {
+	public Future<SearchResult> invokeService(final int storeId, final String storeName, final String searchString) {
 
 		String formattedSearch = null;
 		try {
@@ -74,6 +74,7 @@ public class ServiceInvoker {
 				objectMapper.configure(DeserializationFeature.FAIL_ON_UNKNOWN_PROPERTIES, false);
 				searchResult = objectMapper.readValue(entityStr, SearchResult.class);
 				searchResult.setStoreId(storeId);
+				searchResult.setStoreName(storeName);
 			}
 		} catch (IOException e) {
 			e.printStackTrace();

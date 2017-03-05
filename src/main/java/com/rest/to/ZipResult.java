@@ -16,7 +16,7 @@ public class ZipResult implements Serializable {
 	private static final long serialVersionUID = -8200956529537154023L;
 
 	/** The no. */
-	private String no;
+	private Integer no;
 	
 	/** The name. */
 	private String name;
@@ -26,7 +26,7 @@ public class ZipResult implements Serializable {
 	 *
 	 * @return the no
 	 */
-	public String getNo() {
+	public Integer getNo() {
 		return no;
 	}
 	
@@ -35,7 +35,7 @@ public class ZipResult implements Serializable {
 	 *
 	 * @param no the new no
 	 */
-	public void setNo(String no) {
+	public void setNo(Integer no) {
 		this.no = no;
 	}
 	

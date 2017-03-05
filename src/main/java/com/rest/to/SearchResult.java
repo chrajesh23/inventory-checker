@@ -22,6 +22,9 @@ public class SearchResult implements Serializable {
 
 	/** The store id. */
 	private int storeId;
+	
+	/** The store name. */
+	private String storeName;
 
 	/** The price. */
 	private Integer price;
@@ -161,5 +164,13 @@ public class SearchResult implements Serializable {
 	 */
 	public void setSku(String sku) {
 		this.sku = sku;
+	}
+
+	public String getStoreName() {
+		return storeName;
+	}
+
+	public void setStoreName(String storeName) {
+		this.storeName = storeName;
 	}
 }

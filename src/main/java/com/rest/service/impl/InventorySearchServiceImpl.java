@@ -1,6 +1,7 @@
 package com.rest.service.impl;
 
 import java.util.ArrayList;
+import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
 import java.util.Objects;
@@ -53,9 +54,9 @@ public class InventorySearchServiceImpl implements InventorySearchServiceIF {
 			searchString = prodDesc;
 		}
 		List<Future<SearchResult>> futures = new ArrayList<>();
-		int[] stores = this.getStoresByZipCodes(zipCode);
-		for (int storeId : stores) {
-			futures.add(serviceInvoker.invokeService(storeId, searchString));
+		Map<Integer, String> storesByZip = this.getStoresByZipCodes(zipCode);
+		for (Map.Entry<Integer, String> entry : storesByZip.entrySet()) {
+			futures.add(serviceInvoker.invokeService(entry.getKey(), entry.getValue(), searchString));
 		}
 
 		for (Future<SearchResult> future : futures) {
@@ -81,25 +82,22 @@ public class InventorySearchServiceImpl implements InventorySearchServiceIF {
 	 *            the zip code
 	 * @return the stores by zip codes
 	 */
-	private int[] getStoresByZipCodes(final String zipCode) {
-		int stores[] = null;
+	private Map<Integer, String> getStoresByZipCodes(final String zipCode) {
+		Map<Integer, String> storesByZip = new HashMap<>();
 		if (Objects.nonNull(zipCode) && zipCode.length() > 0) {
 			List<ZipResult> results = serviceInvoker.searchByZip(zipCode);
 			if (Objects.nonNull(results)) {
-				stores = new int[results.size() + 1];
-				int idx = 1;
 				for (ZipResult result : results) {
-					stores[idx++] = Integer.valueOf(result.getNo());
+					storesByZip.put(result.getNo(), result.getName());
 				}
 			}
 		} else {
-			stores = new int[6001];
 			for (int i = 1; i <= 6000; i++) {
-				stores[i] = i;
+				storesByZip.put(i, "");
 			}
 
 		}
-		return stores;
+		return storesByZip;
 	}
 
 	/**
@@ -125,6 +123,7 @@ public class InventorySearchServiceImpl implements InventorySearchServiceIF {
 			}
 
 			response.setStoreId(String.valueOf((inventoryResult.getStoreId())));
+			response.setStoreName(inventoryResult.getStoreName());
 			response.setStoreLink(STORE_LINK + inventoryResult.getStoreId() + "/search?query="
 					+ inventoryResult.getProductId().getItemId());
 
@@ -148,6 +147,7 @@ public class InventorySearchServiceImpl implements InventorySearchServiceIF {
 			if (Objects.nonNull(searchResult) && Objects.nonNull(searchResult.getResults())) {
 				for (InventoryResult inventoryResult : searchResult.getResults()) {
 					inventoryResult.setStoreId(searchResult.getStoreId());
+					inventoryResult.setStoreName(searchResult.getStoreName());
 					if (Objects.nonNull(inventoryResult.getPrice())
 							&& Objects.nonNull(inventoryResult.getPrice().getPriceInCents())) {
 
