@@ -1,2 +1,2 @@
-# This is updated inventory-checker
+# This is secon updated inventory-checker
 Inventory Checker
