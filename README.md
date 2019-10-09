@@ -1,2 +1,2 @@
 # This is updated inventory-checker
-Inventory Checker
+This is Inventory Checker Application
